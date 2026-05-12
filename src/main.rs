@@ -109,4 +109,11 @@ mod tests {
         assert_eq!(cpu_line, "CPU Usage: 12.5%");
         assert_eq!(mem_line, "Memory Usage: 56.3%");
     }
+
+    #[test]
+    fn metric_lines_rounding_boundaries() {
+        let (cpu_line, mem_line) = metric_lines(12.55, 12.45);
+        assert_eq!(cpu_line, "CPU Usage: 12.6%");
+        assert_eq!(mem_line, "Memory Usage: 12.4%");
+    }
 }
