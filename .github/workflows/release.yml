@@ -27,16 +27,11 @@ jobs:
             target: x86_64-unknown-linux-gnu
             artifact_name: lightsysmon
             asset_name: lightsysmon-x86_64-unknown-linux-gnu
-          # Linux ARM64
-          - os: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            artifact_name: lightsysmon
-            asset_name: lightsysmon-aarch64-unknown-linux-gnu
           # Windows
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             artifact_name: lightsysmon.exe
-            asset_name: lightsysmon-x86_64-windows.exe
+            asset_name: lightsysmon-x86_64-windows
 
     steps:
       - uses: actions/checkout@v4
@@ -48,14 +43,42 @@ jobs:
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
 
-      - name: Rename binary
+      - name: Prepare artifact
+        shell: bash
         run: |
-          mkdir -p releases
-          cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} releases/${{ matrix.asset_name }}${{ runner.os == 'Windows' && '.exe' || '' }}
+          mkdir -p release-artifacts
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} release-artifacts/${{ matrix.asset_name }}.exe
+          else
+            cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} release-artifacts/${{ matrix.asset_name }}
+            chmod +x release-artifacts/${{ matrix.asset_name }}
+          fi
 
-      - name: Upload to Release
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.asset_name }}
+          path: release-artifacts/
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Flatten artifacts
+        run: |
+          mkdir -p release-files
+          find artifacts -type f -exec mv {} release-files/ \;
+
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: releases/*
+          files: release-files/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
