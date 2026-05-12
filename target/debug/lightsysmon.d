@@ -1,1 +1,1 @@
-/Users/mikemich/Documents/repos/lightsysmon/target/debug/lightsysmon: /Users/mikemich/Documents/repos/lightsysmon/src/main.rs
+/home/runner/work/lightsysmon/lightsysmon/target/debug/lightsysmon: /home/runner/work/lightsysmon/lightsysmon/src/main.rs
