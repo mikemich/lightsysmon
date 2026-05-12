@@ -335,5 +335,5 @@ fn draw_ui(f: &mut ratatui::Frame, metrics: &AllMetrics) {
     }
 
     // Consume idx to avoid unused-variable warning when all optional sections are absent
-    let _ = idx;
+    let _idx = idx;
 }
