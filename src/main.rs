@@ -11,7 +11,9 @@ use cli::{Cli, Commands};
 async fn main() {
     let cli = Cli::parse();
     let config = config::load_config(cli.config.as_deref());
-    let command = cli.command.or_else(|| interactive::prompt_command(&config));
+    let command = cli
+        .command
+        .or_else(|| tokio::task::block_in_place(|| interactive::prompt_command(&config)));
 
     match command {
         Some(Commands::Watch(args)) => {

@@ -76,7 +76,7 @@ fn prompt_watch_args(config: &Config, tui: bool) -> WatchArgs {
             .interact_text()
             .unwrap_or(process_default)
     } else {
-        5
+        process_default
     };
 
     let sort = prompt_sort_key("Process sort order");
