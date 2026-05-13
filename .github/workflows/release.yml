@@ -13,11 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # macOS Intel
-          - os: macos-13
-            target: x86_64-apple-darwin
-            artifact_name: lightsysmon
-            asset_name: lightsysmon-x86_64-apple-darwin
           # macOS ARM64 (Apple Silicon)
           - os: macos-14
             target: aarch64-apple-darwin
@@ -28,12 +23,7 @@ jobs:
             target: x86_64-unknown-linux-gnu
             artifact_name: lightsysmon
             asset_name: lightsysmon-x86_64-unknown-linux-gnu
-          # Windows
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            artifact_name: lightsysmon.exe
-            asset_name: lightsysmon-x86_64-windows
-
+    
     steps:
       - uses: actions/checkout@v4
 
