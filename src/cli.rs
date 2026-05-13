@@ -1,13 +1,13 @@
 use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Parser)]
-#[clap(author, version, about = "A lightweight system monitor", long_about = None)]
+#[clap(author, version, about = "A lightweight system monitor — run with no arguments for the interactive TUI", long_about = None)]
 pub struct Cli {
     /// Path to config file (default: ~/.config/lightsysmon/config.toml)
     #[clap(short, long)]
     pub config: Option<String>,
     #[clap(subcommand)]
-    pub command: Commands,
+    pub command: Option<Commands>,
 }
 
 #[derive(Subcommand)]
