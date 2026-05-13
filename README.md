@@ -25,6 +25,9 @@ cargo build --release
 ### Subcommands
 
 ```bash
+# Interactive menu (pick actions/options without remembering flags)
+lightsysmon
+
 # Continuously watch system metrics (CPU + memory by default)
 lightsysmon watch
 
@@ -54,6 +57,19 @@ lightsysmon info
 # Generate shell completions
 lightsysmon completions bash   # or zsh, fish, powershell
 ```
+
+### Interactive CLI Menu
+
+Run `lightsysmon` without a subcommand to open a guided menu.  
+You can choose:
+
+- Watch mode (plain or TUI)
+- Top processes
+- Snapshot
+- System info
+- Shell completions
+
+The menu also prompts for common options like interval, sort key, output format, and optional disk/network/process sections.
 
 ### Config File
 
