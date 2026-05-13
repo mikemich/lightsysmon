@@ -7,22 +7,21 @@ mod metrics;
 use clap::Parser;
 use cli::{Cli, Commands};
 
-#[tokio::main]
-async fn main() {
+fn main() {
     let cli = Cli::parse();
     let config = config::load_config(cli.config.as_deref());
-    let command = cli
-        .command
-        .or_else(|| tokio::task::block_in_place(|| interactive::prompt_command(&config)));
+    let command = cli.command.or_else(|| interactive::prompt_command(&config));
 
     match command {
         Some(Commands::Watch(args)) => {
             if args.tui {
-                tokio::task::block_in_place(|| {
-                    display::tui::run_tui(&args, &config);
-                });
+                display::tui::run_tui(&args, &config);
             } else {
-                display::plain::run_watch(&args, &config).await;
+                let runtime = tokio::runtime::Builder::new_current_thread()
+                    .enable_all()
+                    .build()
+                    .expect("failed to build tokio runtime");
+                runtime.block_on(display::plain::run_watch(&args, &config));
             }
         }
         Some(Commands::Top(args)) => {

@@ -79,7 +79,7 @@ fn prompt_watch_args(config: &Config, tui: bool) -> WatchArgs {
         process_default
     };
 
-    let sort = prompt_sort_key("Process sort order");
+    let sort = prompt_sort_key("Sort processes by");
     let timestamp = Confirm::with_theme(&theme)
         .with_prompt("Add timestamps?")
         .default(false)
@@ -112,7 +112,7 @@ fn prompt_top_args(config: &Config) -> TopArgs {
     let theme = ColorfulTheme::default();
     let count_default = config.process_count.unwrap_or(10);
 
-    let sort = prompt_sort_key("Sort top processes by");
+    let sort = prompt_sort_key("Sort processes by");
     let count = Input::<usize>::with_theme(&theme)
         .with_prompt("Number of processes to show")
         .default(count_default)
