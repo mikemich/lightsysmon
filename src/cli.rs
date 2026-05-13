@@ -6,8 +6,9 @@ pub struct Cli {
     /// Path to config file (default: ~/.config/lightsysmon/config.toml)
     #[clap(short, long)]
     pub config: Option<String>,
+    /// Command to run (if omitted, starts interactive menu)
     #[clap(subcommand)]
-    pub command: Commands,
+    pub command: Option<Commands>,
 }
 
 #[derive(Subcommand)]
